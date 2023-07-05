@@ -1,0 +1,13 @@
+---
+import MovieItem from './MovieItem.astro';
+
+const movies=[{
+    id: 'super-mario',
+    title: 'Super Mario Bros',
+    img: 'https://www.themoviedb.org/t/p/w440_and_h660_face/zNKs1T0VZuJiVuhuL5GSCNkGdxf.jpg'
+}]
+---
+
+<ul class="grid grid-cols-2 md:grid-cols-3 gap-3">
+    {movies.map(({id, title, img})=><li><MovieItem id={id} title={title} img={img}/></li>)}
+</ul>
