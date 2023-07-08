@@ -14,9 +14,10 @@ const { title } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
+		<!-- <meta name="view-transition" content="same-origin"></meta> -->
 		<title>{title}</title>
 	</head>
-	<body>
+	<body id="content">
 		<slot />
 	</body>
 </html>
@@ -34,3 +35,34 @@ const { title } = Astro.props;
 			Bitstream Vera Sans Mono, Courier New, monospace;
 	}
 </style>
+
+<script>
+	if(document.startViewTransition){
+		window.navigation.addEventListener('navigate', (event)=>{
+			const toUrl=new URL(event.destination.url)
+			// is an external page?
+			if(location.origin!==toUrl.origin) return
+			
+			// same domain intercept
+			event.intercept({
+				async handler(){
+					// load next page via fetch
+					const response=await fetch(toUrl.pathname) // 'top-gun'
+					const text=await response.text()
+					
+					//get html inside body
+					const [_, data]=text.match(/<body[^>]*>(['\s\S']*)<\/body>/i)
+					
+					//use view transiton api
+					document.startViewTransition(()=>{
+						// how to update the view
+						document.body.innerHTML=data
+						// scroll to top
+						document.documentElement.scrollTop=0
+					})
+				}
+			})
+			
+		})
+	}
+	</script>

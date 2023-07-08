@@ -1,7 +1,17 @@
 ---
-const {title, img} =Astro.props
+export interface Props{
+  title: string,
+  id: string,
+  img: string
+}
+const {title, img, id} =Astro.props
 ---
 
-<a class="hover:scale-105 inline-block transition-all hover:contrast-125 hover:shadow" href="/super-mario">
-    <img class="aspec-[389/500] object-cover w-full rounded" src="https://www.themoviedb.org/t/p/w440_and_h660_face/zNKs1T0VZuJiVuhuL5GSCNkGdxf.jpg" alt="Portada de Mario">
+<a class="hover:scale-105 inline-block transition-all hover:contrast-125 hover:shadow" href={`/${id}`}>
+  <img 
+    class="aspect-[531/797] object-cover w-full rounded" 
+    src={img} 
+    alt={`Portada de ${title}`}
+    style={`view-transition-name: movie-${id}`}
+  >
 </a>
